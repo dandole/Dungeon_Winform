@@ -34,10 +34,10 @@ namespace WinDungeon
                     this.X--;
                     break;
                 case eDirection.Up:
-                    this.Level++;
+                    this.Level--;
                     break;
                 case eDirection.Down:
-                    this.Level--;
+                    this.Level++;
                     break;
             }
         }

@@ -19,12 +19,12 @@ namespace WinDungeon
         internal Level(int floor, int xSize, int ySize)
         {
             this.Floor = floor;
-            while (CheckConnectors())
+            do
             {
                 this.Rooms.Clear();
-                for (int iY = 0; iY < ySize-1; iY++)
+                for (int iY = 0; iY < ySize; iY++)
                 {
-                    for (int iX = 0; iX < xSize-1; iX++)
+                    for (int iX = 0; iX < xSize; iX++)
                     {
                         Room room = new Room(new Point(iX, iY), xSize - 1, ySize - 1);
                         this.Rooms.Add(room.Position, room);
@@ -33,6 +33,7 @@ namespace WinDungeon
 
                 ConnectRooms();
             }
+            while (!this.CheckConnectors());
         }
 
         internal void Clear()
@@ -49,14 +50,22 @@ namespace WinDungeon
                 this.ShapeContainer.Shapes.AddRange(room.Build());
             }
 
+            List<OvalShape> shapesToPullForward = new List<OvalShape>();
+
             foreach(var shape in this.ShapeContainer.Shapes)
             {
                 if (shape is OvalShape)
                 {
-                    ((OvalShape)shape).BringToFront();
+                    shapesToPullForward.Add(shape as OvalShape);
                 }
             }
 
+            foreach(var os in shapesToPullForward)
+            {
+                os.BringToFront();
+            }
+            shapesToPullForward.Clear();
+            this.ShapeContainer.Visible = false;
             this.ShapeContainer.Parent = parent;
         }
 
@@ -100,22 +109,22 @@ namespace WinDungeon
             if (room.Connector == 0)
             {
                 room.Connector = pointer;
-                if (room.North && direction!=eDirection.North)
+                if (room.North && direction!=eDirection.South)
                 {
                     ExploreIt(this.Rooms[new Point(room.Position.X, room.Position.Y - 1)], pointer, eDirection.North);
                 }
 
-                if (room.South && direction != eDirection.South)
+                if (room.South && direction != eDirection.North)
                 {
                     ExploreIt(this.Rooms[new Point(room.Position.X, room.Position.Y + 1)], pointer, eDirection.South);
                 }
 
-                if (room.East && direction != eDirection.East)
+                if (room.East && direction != eDirection.West)
                 {
                     ExploreIt(this.Rooms[new Point(room.Position.X + 1, room.Position.Y)], pointer, eDirection.East);
                 }
 
-                if (room.West && direction != eDirection.West)
+                if (room.West && direction != eDirection.East)
                 {
                     ExploreIt(this.Rooms[new Point(room.Position.X - 1, room.Position.Y)], pointer, eDirection.West);
                 }

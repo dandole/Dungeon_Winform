@@ -13,11 +13,11 @@ namespace WinDungeon
     {
         const int cXOffset = 100;
         const int cYOffset = 100;
-        const int cRoomSize = 10;
-        const int cHallwaySize = 4;
-        const int cLairSize = 4;
-        const int cMonsterSize = 4;
-        const int cPlayerSize = 4;
+        const int cRoomSize = 20;
+        const int cHallwaySize = 8;
+        const int cLairSize = 8;
+        const int cMonsterSize = 8;
+        const int cPlayerSize = 8;
 
         RectangleShape _shapeRoom;
         RectangleShape _shapeNorth;
@@ -46,7 +46,20 @@ namespace WinDungeon
         internal bool Down { get => _down; set { _down = value; _shapeRoom.FillColor = Color.CadetBlue; } }
 
         bool _monster;
-        internal bool Monster { get => _monster; set { _monster = value; _shapeMonster.Visible = value && this.Mapped; } }
+        internal bool Monster 
+        { 
+            get => _monster; 
+            set 
+            { 
+                _monster = value; 
+                if (this.Mapped)
+                {
+                    _shapeMonster.Visible = value;
+                    _shapeMonster.Refresh();
+                    _shapeRoom.Refresh();
+                }
+            } 
+        }
 
         bool _player;
         internal bool Player
@@ -111,6 +124,19 @@ namespace WinDungeon
                     return this.Down;
                 default:
                     return false;
+            }
+        }
+
+        internal int Paths
+        {
+            get
+            {
+                int paths = 0;
+                if (this.North) paths++;
+                if (this.South) paths++;
+                if (this.East) paths++;
+                if (this.West) paths++;
+                return paths;
             }
         }
 
