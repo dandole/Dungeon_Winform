@@ -28,9 +28,9 @@ namespace WinDungeon
             int roomVisits = int.MaxValue;
             for (int i = 1; i <= 6; i++)
             {
-                if (i!=5 && dungeon.Room(this.Location).CanMove((eDirection)i) && dungeon.RoomAt(this.Location, (eDirection)i).Connector < roomVisits)
+                if (i!=5 && dungeon.Room(this.Location).CanMove((eDirection)i) && dungeon.RoomAt(this.Location, (eDirection)i).Visits < roomVisits)
                 {
-                    roomVisits = dungeon.RoomAt(this.Location, (eDirection)i).Connector;
+                    roomVisits = dungeon.RoomAt(this.Location, (eDirection)i).Visits;
                     direction = (eDirection) i;
                 }
             }

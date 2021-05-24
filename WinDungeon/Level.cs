@@ -45,14 +45,14 @@ namespace WinDungeon
 
         internal void Render(Control parent)
         {
-            foreach(var room in Rooms.Values)
+            foreach (var room in Rooms.Values)
             {
                 this.ShapeContainer.Shapes.AddRange(room.Build());
             }
 
             List<OvalShape> shapesToPullForward = new List<OvalShape>();
 
-            foreach(var shape in this.ShapeContainer.Shapes)
+            foreach (var shape in this.ShapeContainer.Shapes)
             {
                 if (shape is OvalShape)
                 {
@@ -60,7 +60,7 @@ namespace WinDungeon
                 }
             }
 
-            foreach(var os in shapesToPullForward)
+            foreach (var os in shapesToPullForward)
             {
                 os.BringToFront();
             }
@@ -71,7 +71,7 @@ namespace WinDungeon
 
         void ConnectRooms()
         {
-            foreach(var room in this.Rooms.Values)
+            foreach (var room in this.Rooms.Values)
             {
                 if (room.North) this.Rooms[new Point(room.Position.X, room.Position.Y - 1)].South = true;
                 if (room.South) this.Rooms[new Point(room.Position.X, room.Position.Y + 1)].North = true;
@@ -84,17 +84,17 @@ namespace WinDungeon
         {
             int count = 1;
             bool check = true;
-            bool firstRoom = false;
+            bool firstRoom = true;
 
-            foreach(var room in this.Rooms.Values)
+            foreach (var room in this.Rooms.Values)
             {
-                if (room.Connector == 0 && firstRoom == false)
+                if (!room.Connected && firstRoom)
                 {
-                    firstRoom = true;
-                    ExploreIt(room, count, 0);
+                    firstRoom = false;
+                    TestIt(room, 0);
                     count++;
                 }
-                else if (room.Connector==0 && firstRoom == true)
+                else if (!room.Connected && !firstRoom)
                 {
                     check = false;
                     break;
@@ -104,29 +104,29 @@ namespace WinDungeon
             return check;
         }
 
-        private void ExploreIt(Room room, int pointer, eDirection direction)
+        private void TestIt(Room room, eDirection directionTestingFrom)
         {
-            if (room.Connector == 0)
+            if (!room.Connected)
             {
-                room.Connector = pointer;
-                if (room.North && direction!=eDirection.South)
+                room.Connected = true;
+                if (room.North && directionTestingFrom != eDirection.South)
                 {
-                    ExploreIt(this.Rooms[new Point(room.Position.X, room.Position.Y - 1)], pointer, eDirection.North);
+                    TestIt(this.Rooms[new Point(room.Position.X, room.Position.Y - 1)], eDirection.North);
                 }
 
-                if (room.South && direction != eDirection.North)
+                if (room.South && directionTestingFrom != eDirection.North)
                 {
-                    ExploreIt(this.Rooms[new Point(room.Position.X, room.Position.Y + 1)], pointer, eDirection.South);
+                    TestIt(this.Rooms[new Point(room.Position.X, room.Position.Y + 1)], eDirection.South);
                 }
 
-                if (room.East && direction != eDirection.West)
+                if (room.East && directionTestingFrom != eDirection.West)
                 {
-                    ExploreIt(this.Rooms[new Point(room.Position.X + 1, room.Position.Y)], pointer, eDirection.East);
+                    TestIt(this.Rooms[new Point(room.Position.X + 1, room.Position.Y)], eDirection.East);
                 }
 
-                if (room.West && direction != eDirection.East)
+                if (room.West && directionTestingFrom != eDirection.East)
                 {
-                    ExploreIt(this.Rooms[new Point(room.Position.X - 1, room.Position.Y)], pointer, eDirection.West);
+                    TestIt(this.Rooms[new Point(room.Position.X - 1, room.Position.Y)], eDirection.West);
                 }
             }
         }
