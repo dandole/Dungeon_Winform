@@ -133,12 +133,7 @@ namespace WinDungeon
         {
             get
             {
-                int paths = 0;
-                if (this.North) paths++;
-                if (this.South) paths++;
-                if (this.East) paths++;
-                if (this.West) paths++;
-                return paths;
+                return new bool[] { this.North, this.South, this.East, this.West, this.Up, this.Down }.Count(x => x);
             }
         }
 

@@ -15,13 +15,13 @@ namespace WinDungeon
         internal int X { get; set; }
         internal int Y { get; set; }
 
-        internal Point Point { get => new Point(this.X,this.Y); }
-        
+        internal Point Point { get => new Point(this.X, this.Y); }
+
         internal void Move(eDirection direction)
         {
             switch (direction)
             {
-                case eDirection.North: 
+                case eDirection.North:
                     this.Y--;
                     break;
                 case eDirection.South:
@@ -42,7 +42,43 @@ namespace WinDungeon
             }
         }
 
-        public static bool operator ==(DungeonLocation loc1, DungeonLocation loc2) => loc1.Level == loc2.Level && loc1.X == loc2.X && loc1.Y == loc2.Y;
-        public static bool operator !=(DungeonLocation loc1, DungeonLocation loc2) => !(loc1.Level == loc2.Level && loc1.X == loc2.X && loc1.Y == loc2.Y);
+        public static bool operator ==(DungeonLocation loc1, DungeonLocation loc2)
+        {
+            if (loc1 is null)
+            {
+                if (loc2 is null)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+
+            return loc1.Equals(loc2);
+        }
+        public static bool operator !=(DungeonLocation loc1, DungeonLocation loc2) => !(loc1 == loc2);
+        public override bool Equals(object obj) => this.Equals(obj as DungeonLocation);
+
+        public bool Equals(DungeonLocation d)
+        {
+            if (d is null)
+            {
+                return false;
+            }
+
+            if (Object.ReferenceEquals(this, d))
+            {
+                return true;
+            }
+
+            if (this.GetType() != d.GetType())
+            {
+                return false;
+            }
+
+            return (Level == d.Level) && (X == d.X) && (Y == d.Y);
+        }
+
+        public override int GetHashCode() => (this.Level, this.X, this.Y).GetHashCode();
     }
 }
