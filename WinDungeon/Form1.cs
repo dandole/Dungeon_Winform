@@ -74,5 +74,11 @@ namespace WinDungeon
         {
             timerDungeon.Start();
         }
+
+        private void btnPlayerData_Click(object sender, EventArgs e)
+        {
+            PlayerData playerDataform = new PlayerData();
+            playerDataform.Show();
+        }
     }
 }
