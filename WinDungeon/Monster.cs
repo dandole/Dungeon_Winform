@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 using static WinDungeon.Constants;
 
 namespace WinDungeon
 {
     internal class Monster
     {
-        SingletonRandom _random = SingletonRandom.GetInstance();
+        private readonly SingletonRandom _random = SingletonRandom.GetInstance();
 
         internal string MonsterType { get; set; }
         internal int HitPoints { get; set; }
@@ -44,10 +41,10 @@ namespace WinDungeon
 
         internal void Move(Dungeon dungeon)
         {
-            eDirection direction;
+            Direction direction;
             while (true)
             {
-                direction = (eDirection)_random.Rnd.Next(1, 7);
+                direction = (Direction)_random.Rnd.Next(1, 7);
                 if (dungeon.Room(this.Location).CanMove(direction))
                     break;
             }

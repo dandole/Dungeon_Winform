@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static WinDungeon.Constants;
-using Microsoft.VisualBasic.PowerPacks;
 using System.Drawing;
+
+using static WinDungeon.Constants;
 
 namespace WinDungeon
 {
@@ -17,26 +13,26 @@ namespace WinDungeon
 
         internal Point Point { get => new Point(this.X, this.Y); }
 
-        internal void Move(eDirection direction)
+        internal void Move(Direction direction)
         {
             switch (direction)
             {
-                case eDirection.North:
+                case Direction.North:
                     this.Y--;
                     break;
-                case eDirection.South:
+                case Direction.South:
                     this.Y++;
                     break;
-                case eDirection.East:
+                case Direction.East:
                     this.X++;
                     break;
-                case eDirection.West:
+                case Direction.West:
                     this.X--;
                     break;
-                case eDirection.Up:
+                case Direction.Up:
                     this.Level--;
                     break;
-                case eDirection.Down:
+                case Direction.Down:
                     this.Level++;
                     break;
             }

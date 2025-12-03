@@ -1,17 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+
 using static WinDungeon.Constants;
 
 namespace WinDungeon
 {
     internal class Dungeon
     {
-        SingletonRandom _random = SingletonRandom.GetInstance();
+        private readonly SingletonRandom _random = SingletonRandom.GetInstance();
 
-        List<Monster> _monsters = new List<Monster>();
+        private readonly List<Monster> _monsters = new List<Monster>();
 
         internal Player Player { get; set; }
 
@@ -23,21 +23,21 @@ namespace WinDungeon
 
         internal Room Room(int level, int x, int y) { return this.Levels[level].Rooms[new Point(x,y)]; }
 
-        internal Room RoomAt(DungeonLocation currentLocation, eDirection direction)
+        internal Room RoomAt(DungeonLocation currentLocation, Direction direction)
         {
             switch (direction)
             {
-                case eDirection.North:
+                case Direction.North:
                     return this.Levels[currentLocation.Level].Rooms[new Point(currentLocation.X, currentLocation.Y - 1)];
-                case eDirection.South:
+                case Direction.South:
                     return this.Levels[currentLocation.Level].Rooms[new Point(currentLocation.X, currentLocation.Y + 1)];
-                case eDirection.East:
+                case Direction.East:
                     return this.Levels[currentLocation.Level].Rooms[new Point(currentLocation.X + 1, currentLocation.Y)];
-                case eDirection.West:
+                case Direction.West:
                     return this.Levels[currentLocation.Level].Rooms[new Point(currentLocation.X - 1, currentLocation.Y)];
-                case eDirection.Up:
+                case Direction.Up:
                     return this.Levels[currentLocation.Level - 1].Rooms[new Point(currentLocation.X, currentLocation.Y)];
-                case eDirection.Down:
+                case Direction.Down:
                     return this.Levels[currentLocation.Level + 1].Rooms[new Point(currentLocation.X, currentLocation.Y)];
                 default:
                     return this.Levels[currentLocation.Level].Rooms[currentLocation.Point];

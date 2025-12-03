@@ -1,10 +1,8 @@
-﻿using Microsoft.VisualBasic.PowerPacks;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
+using Microsoft.VisualBasic.PowerPacks;
+
 using static WinDungeon.Constants;
 
 namespace WinDungeon
@@ -28,7 +26,7 @@ namespace WinDungeon
         OvalShape _shapeMonster;
         OvalShape _shapePlayer;
 
-        SingletonRandom _random = SingletonRandom.GetInstance();
+        private readonly SingletonRandom _random = SingletonRandom.GetInstance();
 
         internal Point Position { get; set; }
         internal bool North { get; set; }
@@ -108,21 +106,21 @@ namespace WinDungeon
             _shapeMonster.Visible = this.Monster;
         }
 
-        internal bool CanMove(eDirection direction)
+        internal bool CanMove(Direction direction)
         {
             switch (direction)
             {
-                case eDirection.North:
+                case Direction.North:
                     return this.North;
-                case eDirection.South:
+                case Direction.South:
                     return this.South;
-                case eDirection.East:
+                case Direction.East:
                     return this.East;
-                case eDirection.West:
+                case Direction.West:
                     return this.West;
-                case eDirection.Up:
+                case Direction.Up:
                     return this.Up;
-                case eDirection.Down:
+                case Direction.Down:
                     return this.Down;
                 default:
                     return false;
@@ -143,11 +141,12 @@ namespace WinDungeon
             _shapeRoom = new RectangleShape(cXOffset + (2 * cRoomSize * this.Position.X),
                                             cYOffset + (2 * cRoomSize * this.Position.Y),
                                             cRoomSize,
-                                            cRoomSize);
-
-            _shapeRoom.FillStyle = FillStyle.Solid;
-            _shapeRoom.FillColor = Color.DarkKhaki;
-            _shapeRoom.Visible = this.Mapped;
+                                            cRoomSize)
+            {
+                FillStyle = FillStyle.Solid,
+                FillColor = Color.DarkKhaki,
+                Visible = this.Mapped
+            };
 
             _shapeNorth = new RectangleShape(cXOffset + (2 * cRoomSize * this.Position.X) + ((cRoomSize - cHallwaySize) / 2),
                                              cYOffset + (2 * cRoomSize * this.Position.Y) - (cRoomSize / 2),
@@ -174,26 +173,32 @@ namespace WinDungeon
             _shapeLair = new OvalShape(cXOffset + (2 * cRoomSize * this.Position.X),
                                        cYOffset + (2 * cRoomSize * this.Position.Y),
                                        cLairSize,
-                                       cLairSize);
-            _shapeLair.FillStyle = FillStyle.Solid;
-            _shapeLair.FillColor = Color.Black;
-            _shapeLair.Visible = this.Lair & this.Mapped;
+                                       cLairSize)
+            {
+                FillStyle = FillStyle.Solid,
+                FillColor = Color.Black,
+                Visible = this.Lair & this.Mapped
+            };
 
             _shapeMonster = new OvalShape(cXOffset + (2 * cRoomSize * this.Position.X) + (cRoomSize - cMonsterSize),
                            cYOffset + (2 * cRoomSize * this.Position.Y) + (cRoomSize - cMonsterSize),
                            cMonsterSize,
-                           cMonsterSize);
-            _shapeMonster.FillStyle = FillStyle.Solid;
-            _shapeMonster.FillColor = Color.Blue;
-            _shapeMonster.Visible = this.Monster & this.Mapped;
+                           cMonsterSize)
+            {
+                FillStyle = FillStyle.Solid,
+                FillColor = Color.Blue,
+                Visible = this.Monster & this.Mapped
+            };
 
             _shapePlayer = new OvalShape(cXOffset + (2 * cRoomSize * this.Position.X) + ((cRoomSize - cPlayerSize) / 2),
                cYOffset + (2 * cRoomSize * this.Position.Y) + ((cRoomSize - cPlayerSize) / 2),
                cPlayerSize,
-               cPlayerSize);
-            _shapePlayer.FillStyle = FillStyle.Solid;
-            _shapePlayer.FillColor = Color.Red;
-            _shapePlayer.Visible = this.Player;
+               cPlayerSize)
+            {
+                FillStyle = FillStyle.Solid,
+                FillColor = Color.Red,
+                Visible = this.Player
+            };
 
             shapes[0] = _shapeRoom;
             shapes[1] = _shapeNorth;

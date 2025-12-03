@@ -1,20 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static WinDungeon.Constants;
 
 namespace WinDungeon
 {
     public partial class Form1 : Form
     {
-        Dungeon _dungeon = new Dungeon();
-        bool _intialize = true;
+        private readonly Dungeon _dungeon = new Dungeon();
+        private bool _intialize = true;
 
         public Form1()
         {
@@ -27,7 +19,7 @@ namespace WinDungeon
             _intialize = false;
         }
 
-        private void timerDungeon_Tick(object sender, EventArgs e)
+        private void TimerDungeon_Tick(object sender, EventArgs e)
         {
             timerDungeon.Enabled = false;
             _dungeon.MoveMonsters();
@@ -40,7 +32,7 @@ namespace WinDungeon
             timerDungeon.Enabled = true;
         }
 
-        private void buttonGenerate_Click(object sender, EventArgs e)
+        private void ButtonGenerate_Click(object sender, EventArgs e)
         {
             buttonGenerate.Enabled = false;
 
@@ -58,7 +50,7 @@ namespace WinDungeon
             buttonAdventure.Enabled = true;
         }
 
-        private void currentLevelNumericUpDown_ValueChanged(object sender, EventArgs e)
+        private void CurrentLevelNumericUpDown_ValueChanged(object sender, EventArgs e)
         {
             if (!_intialize)
             {
@@ -70,12 +62,12 @@ namespace WinDungeon
             }
         }
 
-        private void buttonAdventure_Click(object sender, EventArgs e)
+        private void ButtonAdventure_Click(object sender, EventArgs e)
         {
             timerDungeon.Start();
         }
 
-        private void btnPlayerData_Click(object sender, EventArgs e)
+        private void BtnPlayerData_Click(object sender, EventArgs e)
         {
             PlayerData playerDataform = new PlayerData();
             playerDataform.Show();

@@ -1,11 +1,9 @@
-﻿using Microsoft.VisualBasic.PowerPacks;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+
+using Microsoft.VisualBasic.PowerPacks;
+
 using static WinDungeon.Constants;
 
 namespace WinDungeon
@@ -104,29 +102,29 @@ namespace WinDungeon
             return check;
         }
 
-        private void TestIt(Room room, eDirection directionTestingFrom)
+        private void TestIt(Room room, Direction directionTestingFrom)
         {
             if (!room.Connected)
             {
                 room.Connected = true;
-                if (room.North && directionTestingFrom != eDirection.South)
+                if (room.North && directionTestingFrom != Direction.South)
                 {
-                    TestIt(this.Rooms[new Point(room.Position.X, room.Position.Y - 1)], eDirection.North);
+                    TestIt(this.Rooms[new Point(room.Position.X, room.Position.Y - 1)], Direction.North);
                 }
 
-                if (room.South && directionTestingFrom != eDirection.North)
+                if (room.South && directionTestingFrom != Direction.North)
                 {
-                    TestIt(this.Rooms[new Point(room.Position.X, room.Position.Y + 1)], eDirection.South);
+                    TestIt(this.Rooms[new Point(room.Position.X, room.Position.Y + 1)], Direction.South);
                 }
 
-                if (room.East && directionTestingFrom != eDirection.West)
+                if (room.East && directionTestingFrom != Direction.West)
                 {
-                    TestIt(this.Rooms[new Point(room.Position.X + 1, room.Position.Y)], eDirection.East);
+                    TestIt(this.Rooms[new Point(room.Position.X + 1, room.Position.Y)], Direction.East);
                 }
 
-                if (room.West && directionTestingFrom != eDirection.East)
+                if (room.West && directionTestingFrom != Direction.East)
                 {
-                    TestIt(this.Rooms[new Point(room.Position.X - 1, room.Position.Y)], eDirection.West);
+                    TestIt(this.Rooms[new Point(room.Position.X - 1, room.Position.Y)], Direction.West);
                 }
             }
         }

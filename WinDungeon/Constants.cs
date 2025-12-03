@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace WinDungeon
+﻿namespace WinDungeon
 {
     internal class Constants
     {
-        internal enum eDirection
+        internal enum Direction
         {
             North = 1,
             South = 2,

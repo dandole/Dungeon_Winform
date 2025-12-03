@@ -95,12 +95,12 @@
             this.buttonGenerate.TabIndex = 3;
             this.buttonGenerate.Text = "Generate";
             this.buttonGenerate.UseVisualStyleBackColor = true;
-            this.buttonGenerate.Click += new System.EventHandler(this.buttonGenerate_Click);
+            this.buttonGenerate.Click += new System.EventHandler(this.ButtonGenerate_Click);
             // 
             // timerDungeon
             // 
             this.timerDungeon.Interval = 250;
-            this.timerDungeon.Tick += new System.EventHandler(this.timerDungeon_Tick);
+            this.timerDungeon.Tick += new System.EventHandler(this.TimerDungeon_Tick);
             // 
             // currentLevelNumericUpDown
             // 
@@ -112,7 +112,7 @@
             this.currentLevelNumericUpDown.ReadOnly = true;
             this.currentLevelNumericUpDown.Size = new System.Drawing.Size(82, 31);
             this.currentLevelNumericUpDown.TabIndex = 4;
-            this.currentLevelNumericUpDown.ValueChanged += new System.EventHandler(this.currentLevelNumericUpDown_ValueChanged);
+            this.currentLevelNumericUpDown.ValueChanged += new System.EventHandler(this.CurrentLevelNumericUpDown_ValueChanged);
             // 
             // buttonAdventure
             // 
@@ -124,7 +124,7 @@
             this.buttonAdventure.TabIndex = 5;
             this.buttonAdventure.Text = "Start Adventure";
             this.buttonAdventure.UseVisualStyleBackColor = true;
-            this.buttonAdventure.Click += new System.EventHandler(this.buttonAdventure_Click);
+            this.buttonAdventure.Click += new System.EventHandler(this.ButtonAdventure_Click);
             // 
             // label1
             // 
@@ -175,7 +175,7 @@
             this.btnPlayerData.TabIndex = 11;
             this.btnPlayerData.Text = "Player Data";
             this.btnPlayerData.UseVisualStyleBackColor = true;
-            this.btnPlayerData.Click += new System.EventHandler(this.btnPlayerData_Click);
+            this.btnPlayerData.Click += new System.EventHandler(this.BtnPlayerData_Click);
             // 
             // Form1
             // 
