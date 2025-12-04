@@ -87,12 +87,11 @@
             // 
             // timerDungeon
             // 
-            timerDungeon.Interval = 250;
+            timerDungeon.Interval = 5;
             timerDungeon.Tick += TimerDungeon_Tick;
             // 
             // currentLevelNumericUpDown
             // 
-            currentLevelNumericUpDown.Enabled = false;
             currentLevelNumericUpDown.InterceptArrowKeys = false;
             currentLevelNumericUpDown.Location = new Point(449, 15);
             currentLevelNumericUpDown.Margin = new Padding(4);

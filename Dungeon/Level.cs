@@ -33,14 +33,6 @@ internal class Level
         Rooms.Clear();
     }
 
-    internal void Draw(Graphics g)
-    {
-        foreach (var room in Rooms.Values)
-        {
-            room.Draw(g);
-        }
-    }
-
     void ConnectRooms()
     {
         foreach (var room in Rooms.Values)

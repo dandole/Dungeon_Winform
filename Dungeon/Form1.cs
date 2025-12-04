@@ -1,7 +1,15 @@
-namespace Dungeon;
+﻿namespace Dungeon;
 
 public partial class Form1 : Form
 {
+
+    const int cXOffset = 100;
+    const int cYOffset = 100;
+    const int cRoomSize = 50;
+    const int cHallwaySize = 8;
+    const int cLairSize = 8;
+    const int cMonsterSize = 8;
+    const int cPlayerSize = 8;
 
     private readonly Dungeon _dungeon = new();
     private bool _intialize = true;
@@ -22,7 +30,44 @@ public partial class Form1 : Form
         // Draw the current level if it exists
         if (_dungeon.Levels != null && _dungeon.Levels.TryGetValue(_currentLevel, out var level))
         {
-            level.Draw(e.Graphics);
+            foreach (var room in level.Rooms.Values)
+            {
+                //room.Draw(e.Graphics);
+                var g = e.Graphics;
+                if (!room.Mapped)
+                    continue;
+                // Calculate position
+                int x = cXOffset + (2 * cRoomSize * room.Position.X);
+                int y = cYOffset + (2 * cRoomSize * room.Position.Y);
+
+                // Draw room rectangle
+                g.FillRectangle(Brushes.DarkKhaki, x, y, cRoomSize, cRoomSize);
+                g.DrawRectangle(Pens.Black, x, y, cRoomSize, cRoomSize);
+
+                // Draw hallways if present
+                if (room.North)
+                    g.FillRectangle(Brushes.Gray, x + (cRoomSize - cHallwaySize) / 2, y - cRoomSize / 2, cHallwaySize, cRoomSize / 2);
+                if (room.South)
+                    g.FillRectangle(Brushes.Gray, x + (cRoomSize - cHallwaySize) / 2, y + cRoomSize, cHallwaySize, cRoomSize / 2);
+                if (room.East)
+                    g.FillRectangle(Brushes.Gray, x + cRoomSize, y + (cRoomSize - cHallwaySize) / 2, cRoomSize / 2, cHallwaySize);
+                if (room.West)
+                    g.FillRectangle(Brushes.Gray, x - cRoomSize / 2, y + (cRoomSize - cHallwaySize) / 2, cRoomSize / 2, cHallwaySize);
+                if (room.Up)
+                    DrawStairsUp(g, Pens.Green, x, y, cRoomSize);
+                if (room.Down)
+                    DrawStairsDown(g, Pens.BlueViolet, x, y, cRoomSize);
+
+
+
+                // Draw lair, monster, player as ovals
+                if (room.Lair)
+                    g.FillEllipse(Brushes.Purple, x + 2, y + 2, cLairSize, cLairSize);
+                if (room.Monster)
+                    g.FillEllipse(Brushes.Red, x + (cRoomSize - cMonsterSize), y + (cRoomSize - cMonsterSize), cMonsterSize, cMonsterSize);
+                if (room.Player)
+                    g.FillEllipse(Brushes.Blue, x + (cRoomSize - cPlayerSize) / 2, y + (cRoomSize - cPlayerSize) / 2, cPlayerSize, cPlayerSize);
+            }
         }
     }
 
@@ -70,13 +115,87 @@ public partial class Form1 : Form
 
     private void ButtonAdventure_Click(object sender, EventArgs e)
     {
-        timerDungeon.Start();
+        timerDungeon.Enabled = !timerDungeon.Enabled;
+        //timerDungeon.Start();
     }
 
     private void BtnPlayerData_Click(object sender, EventArgs e)
     {
         PlayerData playerDataform = new();
         playerDataform.Show();
+    }
+    private static void DrawStairsUp(Graphics g, Pen pen, int x, int y, int size)
+    {
+        const int margin = 4;
+        const int steps = 5;
+
+        int leftX = x + margin;
+        int rightX = x + size - margin;
+        int topY = y + margin;
+        int bottomY = y + size - margin;
+
+        // Bottom landing
+        g.DrawLine(pen, leftX, bottomY, rightX, bottomY);
+
+        // --- removed the left wall here! ---
+
+        float span = (rightX - leftX) * 0.92f;
+        float startX = leftX + (rightX - leftX - span) / 2f;
+        float spacing = span / (steps + 1);
+
+        float maxHeight = (bottomY - topY) * 0.85f;
+
+        for (int i = 0; i < steps; i++)
+        {
+            float sx = startX + spacing * (i + 1);
+            float height = maxHeight * (i + 1) / (float)(steps + 1);
+
+            float sy1 = bottomY;
+            float sy2 = bottomY - height;
+
+            g.DrawLine(pen, sx, sy1, sx, sy2);
+            g.DrawLine(pen, sx, sy2, sx + 3, sy2);
+        }
+    }
+
+    private static void DrawStairsDown(Graphics g, Pen pen, int x, int y, int size)
+    {
+        const int margin = 4;
+        const int steps = 5;
+
+        int leftX = x + margin;
+        int rightX = x + size - margin - 2;   // slight inset for breathing room
+        int topY = y + margin;
+        int bottomY = y + size - margin;
+
+        // Top landing
+        g.DrawLine(pen, leftX, topY, rightX, topY);
+
+        // Keep steps well spaced and centered
+        float span = (rightX - leftX) * 0.92f;
+        float startX = leftX + (rightX - leftX - span) / 2f;
+        float stepSpacing = span / (steps + 1);
+
+        // Max depth (reduced slightly for cleaner shape)
+        float maxDepth = (bottomY - topY) * 0.85f;
+
+        for (int i = 0; i < steps; i++)
+        {
+            float sx = startX + stepSpacing * (i + 1);
+            float depth = maxDepth * (i + 1) / (steps + 1);
+
+            float sy1 = topY;
+            float sy2 = topY + depth;
+
+            // Vertical step
+            g.DrawLine(pen, sx, sy1, sx, sy2);
+
+            // Short bottom cap
+            g.DrawLine(pen, sx, sy2, sx + 3, sy2);
+        }
+
+        // Right-side wall
+        g.DrawLine(pen, rightX, topY, rightX, bottomY);
     }
 
 }
