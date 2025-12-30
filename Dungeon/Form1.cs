@@ -5,8 +5,9 @@ public partial class Form1 : Form
 
     const int cXOffset = 100;
     const int cYOffset = 100;
-    const int cRoomSize = 50;
-    const int cHallwaySize = 8;
+    const int cRoomSize = 30;
+    const int cHallwayWidth = 10;
+    const int cHallwayLength = 10;
     const int cLairSize = 8;
     const int cMonsterSize = 8;
     const int cPlayerSize = 8;
@@ -34,11 +35,11 @@ public partial class Form1 : Form
             {
                 //room.Draw(e.Graphics);
                 var g = e.Graphics;
-                if (!room.Mapped)
-                    continue;
+                //if (!room.Mapped)
+                //    continue;
                 // Calculate position
-                int x = cXOffset + (2 * cRoomSize * room.Position.X);
-                int y = cYOffset + (2 * cRoomSize * room.Position.Y);
+                int x = cXOffset + ((cHallwayLength + cRoomSize) * room.Position.X);
+                int y = cYOffset + ((cHallwayLength + cRoomSize) * room.Position.Y);
 
                 // Draw room rectangle
                 g.FillRectangle(Brushes.DarkKhaki, x, y, cRoomSize, cRoomSize);
@@ -46,19 +47,17 @@ public partial class Form1 : Form
 
                 // Draw hallways if present
                 if (room.North)
-                    g.FillRectangle(Brushes.Gray, x + (cRoomSize - cHallwaySize) / 2, y - cRoomSize / 2, cHallwaySize, cRoomSize / 2);
+                    g.FillRectangle(Brushes.Gray, x + (cRoomSize - cHallwayWidth) / 2, y - cHallwayLength / 2, cHallwayWidth, cHallwayLength / 2);
                 if (room.South)
-                    g.FillRectangle(Brushes.Gray, x + (cRoomSize - cHallwaySize) / 2, y + cRoomSize, cHallwaySize, cRoomSize / 2);
+                    g.FillRectangle(Brushes.Gray, x + (cRoomSize - cHallwayWidth) / 2, y + cRoomSize, cHallwayWidth, cHallwayLength / 2);
                 if (room.East)
-                    g.FillRectangle(Brushes.Gray, x + cRoomSize, y + (cRoomSize - cHallwaySize) / 2, cRoomSize / 2, cHallwaySize);
+                    g.FillRectangle(Brushes.Gray, x + cRoomSize, y + (cRoomSize - cHallwayWidth) / 2, cHallwayLength / 2, cHallwayWidth);
                 if (room.West)
-                    g.FillRectangle(Brushes.Gray, x - cRoomSize / 2, y + (cRoomSize - cHallwaySize) / 2, cRoomSize / 2, cHallwaySize);
+                    g.FillRectangle(Brushes.Gray, x - cHallwayLength / 2, y + (cRoomSize - cHallwayWidth) / 2, cHallwayLength / 2, cHallwayWidth);
                 if (room.Up)
                     DrawStairsUp(g, Pens.Green, x, y, cRoomSize);
                 if (room.Down)
                     DrawStairsDown(g, Pens.BlueViolet, x, y, cRoomSize);
-
-
 
                 // Draw lair, monster, player as ovals
                 if (room.Lair)

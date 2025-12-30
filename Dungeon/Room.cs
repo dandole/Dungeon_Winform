@@ -4,8 +4,6 @@ using static Constants;
 
 internal class Room
 {
-    private readonly SingletonRandom _random = SingletonRandom.GetInstance();
-
     internal Point Position { get; set; }
     internal bool North { get; set; }
     internal bool South { get; set; }
@@ -42,15 +40,15 @@ internal class Room
         }
     }
 
-    internal Room(Point position, int xDimension, int yDimension)
+    internal Room(Point position, int xDimension, int yDimension, Random rng)
     {
         Position = position;
         while (!North & !South & !East & !West)
         {
-            North = Position.Y != 0 && _random.Rnd.Next(1, 101) <= 25;
-            South = Position.Y != yDimension && _random.Rnd.Next(1, 101) <= 25;
-            East = Position.X != xDimension && _random.Rnd.Next(1, 101) <= 25;
-            West = Position.X != 0 && _random.Rnd.Next(1, 101) <= 25;
+            North = Position.Y != 0 && rng.Next(100) < 25;
+            South = Position.Y != yDimension && rng.Next(100) < 25;
+            East = Position.X != xDimension && rng.Next(100) < 25;
+            West = Position.X != 0 && rng.Next(100) < 25;
         }
     }
 

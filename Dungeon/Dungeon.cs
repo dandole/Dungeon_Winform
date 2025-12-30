@@ -4,8 +4,6 @@ using static Constants;
 
 internal class Dungeon
 {
-    private readonly SingletonRandom _random = SingletonRandom.GetInstance();
-
     private readonly List<Monster> _monsters = [];
 
     internal Player Player { get; set; }
@@ -83,14 +81,14 @@ internal class Dungeon
         {
             if (level.Floor == 0)
             {
-                playerPtr = level.Rooms.Keys.ElementAt<Point>(_random.Rnd.Next(0, level.Rooms.Count));
+                playerPtr = level.Rooms.Keys.ElementAt<Point>(level.Rng.Next(0, level.Rooms.Count));
                 Player = new Player(new DungeonLocation() { Level = level.Floor, X = playerPtr.X, Y = playerPtr.Y });
                 level.Rooms[playerPtr].Player = true;
             }
 
             if (level.Floor < this.Levels.Count - 1)
             {
-                Point roomPtr = level.Rooms.Keys.ElementAt<Point>(_random.Rnd.Next(0, level.Rooms.Count));
+                Point roomPtr = level.Rooms.Keys.ElementAt<Point>(level.Rng.Next(0, level.Rooms.Count));
                 level.Rooms[roomPtr].Down = true;
                 Room(level.Floor + 1, roomPtr).Up = true;
             }
@@ -99,7 +97,7 @@ internal class Dungeon
             {
                 while(true)
                 {
-                    Room room = level.Rooms[level.Rooms.Keys.ElementAt<Point>(_random.Rnd.Next(0, level.Rooms.Count))];
+                    Room room = level.Rooms[level.Rooms.Keys.ElementAt<Point>(level.Rng.Next(0, level.Rooms.Count))];
                     if (room.Up==false && room.Down==false && room.Paths == 1)
                     {
                         room.Lair = true;
@@ -108,12 +106,12 @@ internal class Dungeon
                 }
             }
 
-            int monsterCount = _random.Rnd.Next(0, level.Rooms.Count / 7);
+            int monsterCount = level.Rng.Next(0, level.Rooms.Count / 7);
             for (int i = 1; i < monsterCount; i++)
             {
                 while (true)
                 {
-                    Room room = level.Rooms[level.Rooms.Keys.ElementAt<Point>(_random.Rnd.Next(0, level.Rooms.Count))];
+                    Room room = level.Rooms[level.Rooms.Keys.ElementAt<Point>(level.Rng.Next(0, level.Rooms.Count))];
                     if (room.Monster == false)
                     {
                         room.Monster = true;
